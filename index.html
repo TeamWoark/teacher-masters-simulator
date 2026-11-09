@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>المحاكي الذكي للمقابلة الشخصية بالذكاء الاصطناعي للمعلمين</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css?v=5" />
+</head>
+<body>
+  <!-- الشريط العلوي الرسمي -->
+  <header class="topbar no-print">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="brand-seal">🎓</div>
+        <div>
+          <div class="brand-title">المحاكي الذكي <span class="brand-gold">للمقابلة الشخصية بالذكاء الاصطناعي</span></div>
+          <div class="brand-sub">منصة التقييم التربوي والقياس السيكومتري (الثقة بالنفس والثبات الانفعالي)</div>
+        </div>
+      </div>
+
+      <div id="loggedUserRibbon" class="user-Ribbon hidden">
+        <span class="user-chip" id="currentUserBadge">مرحباً</span>
+        <button type="button" class="btn btn-sm btn-gold" id="logoutBtn">تسجيل الخروج ↩</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 1. بوابة تسجيل الدخول الموحدة (خالية تماماً من الحسابات التجريبية) ==================== -->
+  <section id="authScreen" class="auth-wrapper">
+    <div class="auth-grid">
+      <div class="auth-showcase">
+        <div>
+          <span class="showcase-badge">✨ محاكاة ذكية تربوية وسيكومترية</span>
+          <h1>تدرّب بثقة على أسئلة المقابلة الشخصية بالذكاء الاصطناعي</h1>
+          <p>
+            بيئة محاكاة صوتية واقعية تطرح عليك الأسئلة الموقفية المعتمدة بصوت عربي فصيح ودقيق، وتحلل إجابتك ونبرتك عبر الميكروفون لقياس الكفاية التربوية والمؤشرات السيكومترية.
+          </p>
+          <ul class="showcase-features">
+            <li>🎙️ <span>الأسئلة الموقفية والتربوية الخمسة بصوت عربي مشكول عالي الدقة</span></li>
+            <li>🦁 <span>قياس سيكومتري دقيق لـ (الثقة بالنفس) و(الثبات الانفعالي)</span></li>
+            <li>🧠 <span>تحليل فوري للإجابة الصوتية وإصدار توصيات عملية ونموذج مثالي</span></li>
+            <li>📊 <span>تقرير ختامي شامل للدرجة التربوية والدرجة السيكومترية للمختبر</span></li>
+          </ul>
+        </div>
+        <div style="margin-top:24px;font-size:0.8rem;color:#99f6e4;">
+          يعمل عبر الميكروفون فقط بخصوصية تامة — متوافق مع الجوال والكمبيوتر
+        </div>
+      </div>
+
+      <div class="auth-form-pane">
+        <div class="role-switch">
+          <button type="button" class="role-tab active" data-login-role="trainee" id="roleTabTrainee">👨‍🏫 دخول المتدربين</button>
+          <button type="button" class="role-tab" data-login-role="admin" id="roleTabAdmin">🛡️ مدير النظام</button>
+        </div>
+
+        <div id="loginErrorBox" class="login-error hidden"></div>
+
+        <!-- نموذج دخول المتدرب -->
+        <form id="traineeLoginForm">
+          <h2 style="margin-bottom:6px;font-size:1.25rem;">تسجيل دخول المتدرب</h2>
+          <p class="muted-text" style="margin-bottom:18px;">أدخل اسم المستخدم وكلمة المرور المرسلة لك من إدارة التدريب</p>
+
+          <div class="form-group">
+            <label for="trUsernameInput">اسم المستخدم / رقم الهوية</label>
+            <input type="text" id="trUsernameInput" placeholder="أدخل اسم المستخدم..." required autocomplete="username" dir="auto" />
+          </div>
+
+          <div class="form-group">
+            <label for="trPasswordInput">كلمة المرور</label>
+            <div style="display:flex;gap:6px;">
+              <input type="password" id="trPasswordInput" style="flex:1;" placeholder="أدخل كلمة المرور..." required autocomplete="current-password" dir="ltr" />
+              <button type="button" class="btn btn-secondary btn-sm" onclick="togglePassField('trPasswordInput')" title="إظهار / إخفاء كلمة المرور">👁️</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-top:6px;">دخول لقاعة المحاكي الذكي ←</button>
+        </form>
+
+        <!-- نموذج دخول مدير النظام -->
+        <form id="adminLoginForm" class="hidden">
+          <h2 style="margin-bottom:6px;font-size:1.25rem;">بوابة مدير النظام والمشرف</h2>
+          <p class="muted-text" style="margin-bottom:18px;">إدارة المتدربين، رفع ملفات الإكسل، ومتابعة الدرجات التربوية والسيكومترية</p>
+
+          <div class="form-group">
+            <label for="admUsernameInput">اسم مستخدم المدير</label>
+            <input type="text" id="admUsernameInput" placeholder="اسم مستخدم المدير" required autocomplete="username" dir="auto" />
+          </div>
+
+          <div class="form-group">
+            <label for="admPasswordInput">كلمة مرور المدير</label>
+            <div style="display:flex;gap:6px;">
+              <input type="password" id="admPasswordInput" style="flex:1;" placeholder="••••••••" required autocomplete="current-password" dir="ltr" />
+              <button type="button" class="btn btn-secondary btn-sm" onclick="togglePassField('admPasswordInput')" title="إظهار / إخفاء كلمة المرور">👁️</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-gold btn-lg btn-block" style="margin-top:6px;">دخول لوحة تحكم المدير 🛡️</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 2. لوحة تحكم مدير النظام (Admin Dashboard) ==================== -->
+  <main id="adminScreen" class="container main-area hidden">
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-val" id="kpiTotalTrainees">0</div>
+        <div class="kpi-lbl">إجمالي المتدربين المسجلين</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" id="kpiActiveTrainees">0</div>
+        <div class="kpi-lbl">الحسابات النشطة حالياً</div>
+      </div>
+      <div class="kpi-card gold-border">
+        <div class="kpi-val" id="kpiTotalAttempts">0</div>
+        <div class="kpi-lbl">إجمالي المقابلات المنجزة</div>
+      </div>
+      <div class="kpi-card gold-border">
+        <div class="kpi-val" id="kpiAvgScore">—</div>
+        <div class="kpi-lbl">متوسط أداء المتدربين</div>
+      </div>
+    </div>
+
+    <div class="subnav-bar">
+      <button type="button" class="subnav-btn active" data-adm-tab="trainees">👥 إدارة المتدربين (إكسل + فردي)</button>
+      <button type="button" class="subnav-btn" data-adm-tab="results">📊 النتائج التربوية والسيكومترية</button>
+      <button type="button" class="subnav-btn" data-adm-tab="questions">🎙️ إدارة الأسئلة الخمسة والصوت</button>
+      <button type="button" class="subnav-btn" data-adm-tab="sync">☁️ الإعدادات والسحابة</button>
+    </div>
+
+    <!-- تبويب مدير 1: إضافة وإدارة المتدربين -->
+    <div id="adm-tab-trainees" class="adm-panel">
+      <div class="admin-two-col">
+        <div class="card">
+          <h3 style="margin-bottom:6px;">➕ إضافة متدرب فردي</h3>
+          <p class="muted-text" style="margin-bottom:14px;">أدخل بيانات المتدرب لإنشاء اسم مستخدم وكلمة مرور خاصة به فوراً</p>
+
+          <form id="addSingleTraineeForm">
+            <div class="form-group">
+              <label for="singleFullName">الاسم الكامل للمتدرب *</label>
+              <input type="text" id="singleFullName" placeholder="مثال: أ. ماجد السبعي" required />
+            </div>
+
+            <div class="form-group">
+              <label for="singleUsername">اسم المستخدم (أو رقم الهوية / الجوال) *</label>
+              <input type="text" id="singleUsername" placeholder="مثال: 1087654321 أو Majed" required />
+            </div>
+
+            <div class="form-group">
+              <label for="singlePassword">كلمة المرور *</label>
+              <div style="display:flex;gap:8px;">
+                <input type="text" id="singlePassword" style="flex:1;" placeholder="مثال: 482910" required />
+                <button type="button" class="btn btn-secondary btn-sm" id="genRandomPassBtn">🎲 توليد</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="singleCohort">التخصص / الدفعة التدريبية</label>
+              <input type="text" id="singleCohort" placeholder="مثال: الدفعة الأولى" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">حفظ وإضافة المتدرب</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+            <div>
+              <h3>📥 إضافة جماعية للمتدربين من ملف Excel</h3>
+              <p class="muted-text">ارفع ملف إكسل (`.xlsx` أو `.xls` أو `.csv`) في كل مرة تريد إضافة دفعة جديدة</p>
+            </div>
+            <button type="button" class="btn btn-gold btn-sm" id="downloadTemplateBtn">⬇️ تحميل قالب الإكسل الجاهز</button>
+          </div>
+
+          <label for="excelFileInput" class="excel-dropzone" id="excelDropzone">
+            <div class="xl-icon">📊</div>
+            <strong>اضغط هنا لاختيار ملف Excel (.xlsx / .csv) أو اسحبه وأفلته هنا</strong>
+            <p class="muted-text" style="margin-top:4px;">
+              الأعمدة المدعومة: (الاسم الكامل | اسم المستخدم | كلمة المرور | التخصص أو الدفعة)
+            </p>
+            <input type="file" id="excelFileInput" accept=".xlsx,.xls,.csv" class="hidden" />
+          </label>
+
+          <div class="form-group" style="margin-bottom:10px;">
+            <label>طريقة التعامل مع الدفعة المرفوعة:</label>
+            <select id="importModeSelect">
+              <option value="merge" selected>إضافة الدفعة الجديدة إلى المتدربين الحاليين (وتحديث المكرر)</option>
+              <option value="replace">استبدال القائمة السابقة بالكامل بملف الإكسل الجديد</option>
+            </select>
+          </div>
+
+          <div id="excelPreviewBox" class="hidden" style="background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <strong id="excelPreviewCountText">تم قراءة 0 متدربين</strong>
+              <button type="button" class="btn btn-primary btn-sm" id="confirmExcelImportBtn">✅ اعتماد وإضافة جميع المتدربين</button>
+            </div>
+            <div id="excelPreviewMiniList" class="muted-text" style="max-height:110px;overflow-y:auto;font-size:0.82rem;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="table-toolbar">
+          <div>
+            <h3>📋 سجل المتدربين وبيانات الدخول</h3>
+            <p class="muted-text">يمكنك البحث، تجربة الدخول لحساب المتدرب، نسخ الدعوة للواتساب، أو تصدير الحسابات لـ Excel</p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <input type="text" id="searchTraineesInput" placeholder="🔍 بحث بالاسم أو المستخدم أو الدفعة..." style="min-width:240px;" />
+            <button type="button" class="btn btn-secondary btn-sm" id="exportTraineesExcelBtn">📊 تصدير المتدربين لـ Excel</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>الاسم الكامل</th>
+                <th>اسم المستخدم</th>
+                <th>كلمة المرور</th>
+                <th>الدفعة / التخصص</th>
+                <th>الحالة</th>
+                <th>إجراءات سريعة</th>
+              </tr>
+            </thead>
+            <tbody id="traineesTableBody"></tbody>
+          </table>
+        </div>
+        <div id="traineesPaginationBar" style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:10px;"></div>
+      </div>
+    </div>
+
+    <!-- تبويب مدير 2: نتائج وتقارير المتدربين (شاملاً الثقة بالنفس والثبات الانفعالي) -->
+    <div id="adm-tab-results" class="adm-panel hidden">
+      <div class="card">
+        <div class="table-toolbar">
+          <div>
+            <h3>📊 سجل النتائج التربوية والسيكومترية للمتدربين</h3>
+            <p class="muted-text">متابعة درجات المتدربين في الأسئلة الخمسة ومؤشري (الثقة بالنفس) و(الثبات الانفعالي) وتصديرها لـ Excel</p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary btn-sm" id="exportResultsExcelBtn">📥 تصدير النتائج لـ Excel</button>
+            <button type="button" class="btn btn-danger btn-sm" id="clearResultsBtn">🗑️ مسح سجل النتائج</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>التاريخ</th>
+                <th>اسم المختبر</th>
+                <th>اسم المستخدم</th>
+                <th>الدفعة</th>
+                <th>الأسئلة</th>
+                <th>الثقة بالنفس</th>
+                <th>الثبات الانفعالي</th>
+                <th>الدرجة الكلية</th>
+                <th>التقدير والتوصية</th>
+              </tr>
+            </thead>
+            <tbody id="resultsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- تبويب مدير 3: الأسئلة الخمسة والصوت الاستوديوي -->
+    <div id="adm-tab-questions" class="adm-panel hidden">
+      <div class="card">
+        <div class="table-toolbar">
+          <div>
+            <h3>🎙️ الأسئلة الخمسة المعتمدة للمقابلة بالذكاء الاصطناعي</h3>
+            <p class="muted-text">يمكنك الاستماع للتسجيل الصوتي الفصيح لكل سؤال أو تعديل النصوص عند الحاجة</p>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="resetDefaultQuestionsBtn">↺ استعادة الأسئلة الخمسة المعتمدة</button>
+        </div>
+        <div id="adminQuestionsList" style="display:flex;flex-direction:column;gap:14px;"></div>
+      </div>
+    </div>
+
+    <!-- تبويب مدير 4: الإعدادات والسحابة -->
+    <div id="adm-tab-sync" class="adm-panel hidden">
+      <div class="admin-two-col">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <h3>🗄️ قاعدة بيانات Supabase السحابية المؤمّنة</h3>
+            <span id="supabaseStatusBadge" class="badge badge-success">متصل ومؤمّن ✅</span>
+          </div>
+          <p class="muted-text" style="margin-bottom:12px;">
+            تُحفظ جميع دفعات الإكسل (١,٠٠٠ متدرب أو أكثر) ودرجاتهم السيكومترية والتربوية مباشرة في سحابة Supabase المشفرة بـ RLS.
+          </p>
+          <div class="form-group">
+            <label for="sbUrlInput">رابط مشروع Supabase (Project URL)</label>
+            <input type="url" id="sbUrlInput" dir="ltr" />
+          </div>
+          <div class="form-group">
+            <label for="sbAnonKeyInput">المفتاح العام (anon public key)</label>
+            <input type="text" id="sbAnonKeyInput" dir="ltr" />
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" id="saveSupabaseConfigBtn">🔌 فحص وتحديث اتصال Supabase</button>
+
+          <hr style="margin:18px 0;border:none;border-top:1px solid var(--border);" />
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-ghost btn-sm" id="downloadTraineesJsonBtn">💾 تنزيل نسخة احتياطية JSON للمتدربين</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🔐 إعدادات الأمان ومدير النظام والذكاء الاصطناعي</h3>
+
+          <div class="form-group mt-md">
+            <label for="cfgAdminUser">اسم مستخدم مدير النظام</label>
+            <input type="text" id="cfgAdminUser" placeholder="admin" />
+          </div>
+          <div class="form-group">
+            <label for="cfgAdminPass">كلمة مرور مدير النظام</label>
+            <input type="text" id="cfgAdminPass" placeholder="admin123" />
+          </div>
+
+          <hr style="margin:16px 0;border:none;border-top:1px solid var(--border);" />
+
+          <div class="form-group">
+            <label for="cfgAiProvider">محرك تحليل إجابات المتدربين والسمات السيكومترية</label>
+            <select id="cfgAiProvider">
+              <option value="builtin">المحرك التربوي والسيكومتري المدمج (مجاني ويعمل فوراً)</option>
+              <option value="gemini">Google Gemini 2.5 Flash (تحليل الصوت والنص بالذكاء الاصطناعي)</option>
+              <option value="groq">Groq Cloud (Whisper + Llama 3.3)</option>
+              <option value="openai">OpenAI (GPT-4o-mini)</option>
+            </select>
+          </div>
+          <div class="form-group" id="cfgApiKeyGroup">
+            <label for="cfgAiKey">مفتاح الواجهة البرمجية (API Key - اختياري)</label>
+            <input type="password" id="cfgAiKey" placeholder="أدخل مفتاح API إن رغبت..." dir="ltr" />
+          </div>
+
+          <button type="button" class="btn btn-gold btn-block" id="saveSystemConfigBtn">💾 حفظ إعدادات النظام</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==================== 3. واجهة المتدرب (المحاكي الذكي التربوي والسيكومتري) ==================== -->
+  <main id="traineeScreen" class="container main-area hidden">
+    <div class="trainee-nav no-print">
+      <button type="button" class="t-tab active" data-tr-tab="home">🏠 لوحة الاستعداد والمحاور</button>
+      <button type="button" class="t-tab" data-tr-tab="exam">🎙️ قاعة المقابلة بالذكاء الاصطناعي (٥ أسئلة)</button>
+      <button type="button" class="t-tab" data-tr-tab="report">📊 التقرير التربوي والسيكومتري</button>
+    </div>
+
+    <!-- تبويب متدرب 1: لوحة الاستعداد -->
+    <div id="tr-tab-home" class="tr-panel">
+      <div class="standards-hero">
+        <div style="flex:1 1 500px;">
+          <span class="showcase-badge">🎯 محاكي أسئلة الذكاء الاصطناعي — تقييم تربوي وسيكومتري</span>
+          <h2 style="font-size:1.55rem;margin-bottom:8px;" id="trWelcomeHeading">أهلاً بك في منصة المحاكاة الذكية</h2>
+          <p style="color:#d1fae5;font-size:0.95rem;">
+            ستخوض ٥ أسئلة موقفية وتربوية بصوت عربي واضح؛ يحلل النظام إجابتك ونبرتك عبر الميكروفون ليقيّم كفايتك المهنية ويقيس مؤشراتك السيكومترية كـ <strong>الثقة بالنفس</strong> و<strong>الثبات الانفعالي</strong> ويمنحك درجة وتوصيات تطويرية دقيقة.
+          </p>
+          <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-gold btn-lg" id="startExamNowBtn">🚀 ابدأ المقابلة الصوتية الآن</button>
+            <button type="button" class="btn btn-secondary" id="playWelcomeVoiceBtn">🔊 استمع لتعليمات المحاكي الصوتية</button>
+          </div>
+        </div>
+
+        <div class="card" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:#fff;min-width:250px;">
+          <div style="font-size:0.85rem;color:#fde68a;font-weight:700;margin-bottom:8px;">🎙️ جاهزية الميكروفون للتحليل الصوتي</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+            <span id="trMicStatusBadge" class="badge badge-neutral">بانتظار الفحص</span>
+            <button type="button" class="btn btn-secondary btn-sm" id="trTestMicBtn">فحص المايك</button>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,0.2);border-radius:99px;overflow:hidden;">
+            <div id="trWelcomeMicBar" style="height:100%;width:0%;background:#34d399;transition:width 0.08s;"></div>
+          </div>
+          <small style="display:block;margin-top:8px;font-size:0.76rem;color:#cbd5e1;">يقيس المايك ثبات النبرة وإيقاع الثقة بدون كاميرا</small>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🧭 محاور أسئلة المقابلة الخمسة والجوانب السيكومترية المقاسة</h3>
+        <p class="muted-text">تغطي المقابلة الموقفية خمسة جوانب أساسية تقيسها أنظمة المقابلات بالذكاء الاصطناعي:</p>
+        <div class="standards-cards-grid" id="trStandardsGrid"></div>
+      </div>
+    </div>
+
+    <!-- تبويب متدرب 2: قاعة الاختبار المحاكي الصوتي -->
+    <div id="tr-tab-exam" class="tr-panel hidden">
+      <div class="stepper-card card no-print">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span class="badge badge-success" id="examStandardCodeBadge">السؤال الأول</span>
+          <span class="badge badge-gold" id="examPsychoFocusBadge">🧠 يقيس: الثقة بالنفس</span>
+          <strong id="examProgressText">السؤال 1 من 5</strong>
+        </div>
+        <div class="question-pills" id="examStepperPills"></div>
+        <button type="button" class="btn btn-ghost btn-sm" id="trFinishEarlyBtn">إنهاء وإصدار التقرير</button>
+      </div>
+
+      <div class="studio-voice-grid">
+        <div class="card">
+          <div class="committee-header">
+            <div class="committee-avatar-wrap" id="committeeAvatarWrap">
+              <div class="committee-avatar">🤖</div>
+              <span class="pulse-ring"></span>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <h3>محاور الذكاء الاصطناعي</h3>
+                <span class="audio-quality-tag">🎙️ نطق فصيح مُشكَّل</span>
+              </div>
+              <span class="muted-text" id="examAxisSubtitle" style="font-weight:700;color:var(--emerald);"></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <select id="audioSpeedSelect" title="سرعة قراءة السؤال" style="padding:6px 8px;font-size:0.8rem;">
+                <option value="0.9">هادئ 0.9x</option>
+                <option value="1" selected>طبيعي 1.0x</option>
+                <option value="1.1">نشط 1.1x</option>
+              </select>
+              <button type="button" class="btn btn-primary btn-sm" id="speakQuestionBtn">🔊 سماع السؤال</button>
+            </div>
+          </div>
+
+          <div class="question-box">
+            <p class="question-main-text" id="examQuestionText"></p>
+          </div>
+
+          <div class="guidance-box">
+            <strong>💡 إرشاد الإجابة والسمة السيكومترية المستهدفة:</strong>
+            <p id="examGuidanceText" style="margin-top:4px;"></p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="mic-stage">
+            <button type="button" class="mic-orb-btn" id="micOrbToggleBtn" title="اضغط لبدء أو إيقاف تسجيل الإجابة">
+              <span id="micOrbEmoji">🎙️</span>
+            </button>
+            <div style="font-size:0.88rem;color:#cbd5e1;margin-top:8px;" id="micStateCaption">
+              اضغط على الميكروفون وتحدث بثقة وهدوء لتحليل إجابتك وبصمتك الصوتية
+            </div>
+            <div class="rec-timer" id="examRecTimer">00:00</div>
+
+            <div class="waveform-wrapper">
+              <canvas id="examWaveCanvas" width="460" height="54"></canvas>
+            </div>
+
+            <div class="voice-stats-strip">
+              <div class="v-stat"><span>حالة المايك</span><strong id="statMicReady">جاهز</strong></div>
+              <div class="v-stat"><span>عدد الكلمات</span><strong id="statWordCount">0 كلمة</strong></div>
+              <div class="v-stat"><span>إيقاع الصوت</span><strong id="statPaceWpm">—</strong></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px;">
+              <label for="examTranscriptInput" style="font-size:0.88rem;font-weight:700;">
+                📝 النص المفرغ لإجابتك الصوتية
+                <span id="sttBadge" class="badge badge-neutral" style="margin-right:6px;">يتحول كلامك لنص تلقائياً</span>
+              </label>
+              <button type="button" class="btn-secondary btn-sm btn" id="fillSampleAnswerBtn" style="padding:3px 10px;font-size:0.78rem;">
+                ⚡ إدراج إجابة تدريبية
+              </button>
+            </div>
+            <textarea
+              id="examTranscriptInput"
+              rows="4"
+              style="width:100%;"
+              placeholder="تحدث عبر الميكروفون ليظهر نص إجابتك هنا تلقائياً، كما يمكنك مراجعته أو الكتابة مباشرة قبل التحليل..."
+            ></textarea>
+          </div>
+
+          <div class="console-actions">
+            <button type="button" class="btn btn-record" id="recordMainBtn">🎙️ بدء تسجيل الإجابة</button>
+            <button type="button" class="btn btn-primary" id="analyzeMainBtn">🧠 تحليل الإجابة والسمات السيكومترية</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- جاري التحليل -->
+      <div id="examAnalyzingCard" class="card hidden" style="text-align:center;padding:34px;margin-bottom:20px;">
+        <div class="spinner"></div>
+        <h3>يقوم النظام بتحليل إجابتك وقياس الثقة بالنفس والثبات الانفعالي...</h3>
+        <p class="muted-text">يتم فحص المضمون التربوي، ثبات النبرة، سرعة الاستجابة، ومؤشرات الاتزان الانفعالي.</p>
+      </div>
+
+      <!-- بطاقة التقييم التربوي + السيكومتري الفورية -->
+      <div id="examFeedbackCard" class="card feedback-panel hidden">
+        <div id="examCloudNotice" class="login-error hidden" style="background:#fffbeb;color:#92400e;border-color:#fcd34d;"></div>
+
+        <div class="feedback-top">
+          <div class="score-summary-block">
+            <div class="score-circle">
+              <span id="fbScoreNum">85</span>
+              <small>/ 100</small>
+            </div>
+            <div>
+              <span class="badge badge-success" id="fbVerdictTag">مجتاز بجدارة</span>
+              <h3 style="margin-top:4px;" id="fbEngineLabel">نتيجة التحليل الذكي المتكامل</h3>
+              <p class="muted-text" id="fbSummaryText" style="margin-top:4px;font-size:0.92rem;"></p>
+            </div>
+          </div>
+
+          <div id="fbAudioReplayWrap" class="hidden" style="background:#f8fafc;padding:10px 14px;border-radius:12px;border:1px solid var(--border);">
+            <span style="display:block;font-size:0.78rem;font-weight:700;margin-bottom:5px;">🎧 استمع لتسجيل صوتك ونبرتك:</span>
+            <audio id="fbRecordedAudio" controls style="height:34px;max-width:250px;"></audio>
+          </div>
+        </div>
+
+        <!-- 1. قسم القياس السيكومتري الصريح (الثقة بالنفس والثبات الانفعالي) -->
+        <div class="psycho-panel">
+          <div class="psycho-header">
+            <div>
+              <h4 style="color:var(--navy);font-size:1.05rem;">🧠 التقييم السيكومتري للمختبر (تحليل السمات الشخصية والصوتية)</h4>
+              <p id="fbPsychoDiagnosis" style="font-size:0.86rem;color:#334155;margin-top:2px;"></p>
+            </div>
+            <span class="badge badge-success" style="font-size:0.88rem;padding:6px 14px;" id="fbPsychoOverallBadge">الدرجة السيكومترية: 85 / 100</span>
+          </div>
+
+          <div class="psycho-grid">
+            <div class="psycho-item">
+              <div class="pillar-head"><span>🦁 الثقة بالنفس</span><strong id="psyValConf">0%</strong></div>
+              <div class="psycho-bar"><div id="psyBarConf" style="width:0%"></div></div>
+              <small class="muted-text" id="psyLblConf">الحسم والمبادرة واستقرار الصوت</small>
+            </div>
+            <div class="psycho-item">
+              <div class="pillar-head"><span>⚖️ الثبات الانفعالي</span><strong id="psyValStab">0%</strong></div>
+              <div class="psycho-bar"><div id="psyBarStab" style="width:0%"></div></div>
+              <small class="muted-text" id="psyLblStab">ضبط النفس والهدوء تحت الضغط</small>
+            </div>
+            <div class="psycho-item">
+              <div class="pillar-head"><span>🚀 المبادرة والمرونة</span><strong id="psyValInit">0%</strong></div>
+              <div class="psycho-bar"><div id="psyBarInit" style="width:0%"></div></div>
+              <small class="muted-text">القدرة على ابتكار الحلول</small>
+            </div>
+            <div class="psycho-item">
+              <div class="pillar-head"><span>🎙️ الحضور والطلاقة</span><strong id="psyValVoc">0%</strong></div>
+              <div class="psycho-bar"><div id="psyBarVoc" style="width:0%"></div></div>
+              <small class="muted-text">انسيابية الحديث وقلة التردد</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. معايير المضمون التربوي والمهني -->
+        <div class="pillars-grid">
+          <div class="pillar-item">
+            <div class="pillar-head"><span>📘 العمق التربوي والمفاهيم</span><strong id="pVal1">0%</strong></div>
+            <div class="pillar-bar"><div id="pBar1" style="width:0%"></div></div>
+            <small class="muted-text">تغطية عناصر السؤال</small>
+          </div>
+          <div class="pillar-item">
+            <div class="pillar-head"><span>🏫 التطبيق الميداني العملي</span><strong id="pVal2">0%</strong></div>
+            <div class="pillar-bar"><div id="pBar2" style="width:0%"></div></div>
+            <small class="muted-text">وضوح الخطوات الإجرائية</small>
+          </div>
+          <div class="pillar-item">
+            <div class="pillar-head"><span>🤝 الاتجاه التربوي الإيجابي</span><strong id="pVal4">0%</strong></div>
+            <div class="pillar-bar"><div id="pBar4" style="width:0%"></div></div>
+            <small class="muted-text">التمركز حول مصلحة الطالب</small>
+          </div>
+        </div>
+
+        <div class="two-col-feedback">
+          <div class="fb-box strengths-box">
+            <h4>✅ نقاط القوة التربوية والسيكومترية</h4>
+            <ul id="fbStrengthsUl"></ul>
+          </div>
+          <div class="fb-box recommendations-box">
+            <h4>💡 توصيات لتطوير الإجابة والثقة والثبات الانفعالي</h4>
+            <ul id="fbRecsUl"></ul>
+          </div>
+        </div>
+
+        <div class="two-col-feedback">
+          <div class="card" style="background:#f8fafc;padding:16px;">
+            <strong>🎯 المحاور والأفكار التي غطتها إجابتك بنجاح:</strong>
+            <div id="fbKwMatched" class="chips-wrap" style="margin-bottom:10px;"></div>
+            <strong>💡 زوايا إثرائية يمكنك إضافتها لرفع التميز (اختياري):</strong>
+            <div id="fbKwMissing" class="chips-wrap"></div>
+          </div>
+          <div class="card" style="background:#f8fafc;padding:16px;">
+            <h4 style="color:var(--emerald);margin-bottom:6px;">✨ الإجابة النموذجية الاسترشادية</h4>
+            <p id="fbModelText" style="font-size:0.9rem;"></p>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--border);padding-top:16px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-ghost" id="retrySameQBtn">🔄 إعادة المحاولة لتحسين الدرجة</button>
+          <button type="button" class="btn btn-primary btn-lg" id="goNextQBtn">السؤال التالي ←</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- تبويب متدرب 3: التقرير الختامي الشامل (تربوي + سيكومتري) -->
+    <div id="tr-tab-report" class="tr-panel hidden">
+      <div id="trReportEmpty" class="card" style="text-align:center;padding:48px 20px;">
+        <div style="font-size:2.8rem;margin-bottom:8px;">📊</div>
+        <h3>لم يتم إصدار تقرير جلسة بعد</h3>
+        <p class="muted-text" style="margin:8px auto 18px;max-width:460px;">أكمل الإجابة على الأسئلة في قاعة المقابلة ليصدر لك التقرير التربوي والسيكومتري الشامل.</p>
+        <button type="button" class="btn btn-primary" id="gotoExamFromEmptyBtn">الانتقال لقاعة المقابلة</button>
+      </div>
+
+      <div id="trReportContent" class="hidden">
+        <div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:24px;margin-bottom:20px;background:linear-gradient(135deg,#fff,#f0fdf4);flex-wrap:wrap;">
+          <div style="flex:1 1 440px;">
+            <span class="badge badge-success" id="repHeaderBadge">تقرير الجاهزية النهائي</span>
+            <h2 style="margin:8px 0;font-size:1.45rem;" id="repVerdictTitle">مجتاز بتميز</h2>
+            <p id="repExecText" style="color:var(--text-sec);"></p>
+            <div class="no-print" style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ طباعة / حفظ التقرير PDF</button>
+              <button type="button" class="btn btn-secondary" id="newAttemptBtn">🔄 بدء محاولة تدريبية جديدة</button>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center;">
+            <div style="text-align:center;">
+              <div style="width:112px;height:112px;border-radius:50%;background:var(--navy);color:#34d399;border:5px solid var(--emerald);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 6px;">
+                <span id="repBigScore" style="font-size:2.05rem;font-weight:900;line-height:1;">86</span>
+                <small style="color:#fff;">من 100</small>
+              </div>
+              <strong style="font-size:0.83rem;">الدرجة الكلية للمقابلة</strong>
+            </div>
+
+            <div style="text-align:center;">
+              <div style="width:112px;height:112px;border-radius:50%;background:#1e3a8a;color:#fde68a;border:5px solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 6px;">
+                <span id="repPsychoBigScore" style="font-size:2.05rem;font-weight:900;line-height:1;">85</span>
+                <small style="color:#fff;">من 100</small>
+              </div>
+              <strong style="font-size:0.83rem;">الدرجة السيكومترية</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- بطاقة تفصيل المؤشرات السيكومترية في التقرير النهائي -->
+        <div class="psycho-panel">
+          <h3 style="color:var(--navy);margin-bottom:12px;">🧠 الملف السيكومتري للمختبر عبر جميع الأسئلة</h3>
+          <div class="psycho-grid">
+            <div class="psycho-item">
+              <div class="pillar-head"><span>🦁 متوسط الثقة بالنفس</span><strong id="repPsyConf">0%</strong></div>
+              <div class="psycho-bar"><div id="repPsyBarConf" style="width:0%"></div></div>
+            </div>
+            <div class="psycho-item">
+              <div class="pillar-head"><span>⚖️ متوسط الثبات الانفعالي</span><strong id="repPsyStab">0%</strong></div>
+              <div class="psycho-bar"><div id="repPsyBarStab" style="width:0%"></div></div>
+            </div>
+            <div class="psycho-item">
+              <div class="pillar-head"><span>🚀 المبادرة وحل المشكلات</span><strong id="repPsyInit">0%</strong></div>
+              <div class="psycho-bar"><div id="repPsyBarInit" style="width:0%"></div></div>
+            </div>
+            <div class="psycho-item">
+              <div class="pillar-head"><span>🎙️ الاتزان والطلاقة الصوتية</span><strong id="repPsyVoc">0%</strong></div>
+              <div class="psycho-bar"><div id="repPsyBarVoc" style="width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-grid">
+          <div class="card">
+            <h3>🕸️ المخطط الراداري (التربوي والسيكومتري)</h3>
+            <div id="trRadarBox" style="display:flex;justify-content:center;align-items:center;min-height:295px;"></div>
+          </div>
+          <div class="card">
+            <h3>🎯 التوصيات التطويرية المخصصة قبل المقابلة الفعلية</h3>
+            <div id="trFinalRecsBox" style="margin-top:12px;"></div>
+          </div>
+        </div>
+
+        <div class="card mt-lg">
+          <h3>📋 تفصيل الدرجة التربوية والسيكومترية لكل سؤال</h3>
+          <div id="trBreakdownBox" style="display:flex;flex-direction:column;gap:12px;margin-top:14px;"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toastNotification" class="toast-msg hidden"></div>
+
+  <script src="./vendor/xlsx.full.min.js?v=7"></script>
+  <script src="./js/questions-and-ai.js?v=7"></script>
+  <script src="./js/app.js?v=7"></script>
+</body>
+</html>
